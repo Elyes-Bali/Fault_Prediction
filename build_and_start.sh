@@ -1,20 +1,21 @@
 #!/usr/bin/env bash
 
-# 1. Install Python dependencies (in the backend folder)
+# This script is now designed to be run from the 'backend' directory (Render Root Directory)
+
+# 1. Install Python dependencies
 echo "Installing Python dependencies..."
-pip install -r backend/requirements.txt
+# requirements.txt is now local to the current directory (backend/)
+pip install -r requirements.txt
 
-# 2. Build the React frontend (in the frontend folder)
+# 2. Build the React frontend
 echo "Building React frontend..."
-# Assuming package.json is in the 'frontend' directory:
-npm install --prefix frontend
-npm run build --prefix frontend
-# This will create a 'frontend/dist' directory.
+# The frontend folder is one level up and parallel to backend/
+npm install --prefix ../frontend
+npm run build --prefix ../frontend
 
-# 3. Start the combined Flask/Gunicorn server
-echo "Starting Gunicorn server..."
-# Gunicorn will start the server.py inside the backend directory.
-# The server will run from the root of the project.
-cd backend
-gunicorn -w 2 --threads 4 -b 0.0.0.0:$PORT server:app 
-# NOTE: Assumes your Flask instance is named 'app' inside 'server.py'
+# 3. Move the compiled frontend code to the correct location
+# The build created ../frontend/dist. Flask needs it at ./dist (inside backend/).
+echo "Moving React assets from ../frontend/dist to ./dist..."
+mv ../frontend/dist ./dist
+
+echo "Build process completed successfully."
