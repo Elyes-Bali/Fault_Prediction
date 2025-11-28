@@ -13,14 +13,14 @@ import time # <--- ADDED: Import time module for performance measurement
 
 # --- FLASK SETUP ---
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 UPLOAD_FOLDER = 'uploads'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # --- MODEL PATH (MUST BE ACCESSIBLE TO THE SERVER) ---
 # NOTE: Replace this with the actual path on your server if different
-MODEL_PATH =r"D:\Ayoub\kerasCode\modele_detection_panne.keras" 
+MODEL_PATH = "model/modele_detection_panne.keras"
 
 # --- MODEL PARAMETERS (From your test2.ipynb) ---
 BATCH_SIZE = 4096 
@@ -228,9 +228,4 @@ def run_model():
   return jsonify(results)
 
 if __name__ == '__main__':
-  # You must run this command in your terminal:
-  # pip install flask tensorflow scikit-learn pandas werkzeug
-  #
-  # Ensure your Keras model is in the same directory.
-  # To run: python app.py
-  app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

@@ -14,7 +14,8 @@ import {
 } from "lucide-react";
 import Sidebar from "./Sidebar";
 
-const API_URL = "http://127.0.0.1:5000/api";
+// const API_URL = "http://127.0.0.1:5000/api";
+const API_URL = "http://127.0.0.1:5000/api" || "https://ml-backend.onrender.com/api";
 
 const Classification = () => {
   const [selectedFile, setSelectedFile] = useState(null);
